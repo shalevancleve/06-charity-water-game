@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Water Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Top bar with logo and navigation -->
+    <div id="confetti-container"></div>
+    <div id="top-bar">
+        <div style="display: flex; align-items: center;">
+            <!-- Hamburger menu button for mobile -->
+            <button id="hamburger-menu" aria-label="Open navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div id="logo-container">
+                <!-- Logo image, make sure cw_logo_horizontal.png is in the project folder -->
+                <img src="img/cw_logo_horizontal.png" alt="Charity: Water Logo" id="logo">
+            </div>
+        </div>
+        <nav id="navbar">
+            <a href="#" class="nav-link">Play Game</a>
+            <a href="about.html" class="nav-link">About us</a>
+            <a href="signup.html" class="nav-link">Newsletter Signup</a>
+        </nav>
+    </div>
+    <!-- Sidebar for mobile navigation -->
+    <nav id="sidebar">
+        <button id="sidebar-close" aria-label="Close menu">&times;</button>
+        <a href="index.html" class="nav-link">Play Game</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="signup.html" class="nav-link">Newsletter Signup</a>
+    </nav>
+    <div id="sidebar-overlay"></div>
+    
+    <div id="scroll-wrapper">
+      <h1>Liquid Lifeline</h1>
+      <div id="game-area-wrapper">
+        <div id="game-container">
+          <div id="game-board">
+            <!-- Board will be filled with empty tiles by JS on load -->
+          </div>
+        </div>
+        <div id="menu-panel">
+          <div class="button-group">
+            <button id="new-game-btn">New Game</button>
+            <button id="next-level-btn" disabled>Next Level</button>
+          </div>
+          <div id="stars-container">
+            <!-- Timer display -->
+            <div id="timer-display">Time: 0s</div>
+            <!-- 3-star row -->
+            <div id="level-stars">
+              <img src="assets/star-g.png" alt="Star" class="star-icon">
+              <img src="assets/star-g.png" alt="Star" class="star-icon">
+              <img src="assets/star-g.png" alt="Star" class="star-icon">
+            </div>
+            <!-- Total stars at the bottom -->
+            <div id="total-stars">
+              <img src="assets/star-y.png" alt="Total Stars" class="star-icon">
+              <span id="total-stars-count">x0</span>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer bar with social media icons and info text -->
+    <footer id="footer-bar">
+        <div id="footer-socials">
+            <!-- Social media icons as SVGs, each wrapped in a link -->
+            <a href="https://x.com/charitywater" target="_blank" aria-label="X / Twitter">
+                <!-- X (Twitter) SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" version="1.1" id="IconChangeColor" height="200" width="200"> <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" id="mainIconPathAttribute" fill="#737373"></path> </svg>
+            </a>
+            <a href="https://www.facebook.com/charitywater" target="_blank" aria-label="Facebook">
+                <!-- Facebook SVG -->
+                <svg width="24" height="24" fill="gray" viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.595 0 0 .592 0 1.326v21.348C0 23.408.595 24 1.325 24h11.495v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.797.143v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.406 24 24 23.408 24 22.674V1.326C24 .592 23.406 0 22.675 0" fill="#737373"></path></svg>
+            </a>
+            <a href="https://www.instagram.com/charitywater/" target="_blank" aria-label="Instagram">
+                <!-- Instagram SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" id="IconChangeColor" height="200" width="200"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" id="mainIconPathAttribute" fill="#737373"></path></svg>
+            </a>
+            <a href="https://www.snapchat.com/add/charitywater" target="_blank" aria-label="Snapchat">
+                <!-- Snapchat SVG -->
+                <svg width="24" height="24" fill="#888" viewBox="0 0 16 16">
+                    <path d="M15.943 11.526c-.111-.303-.323-.465-.564-.599a1.416 1.416 0 0 0-.123-.064l-.219-.111c-.752-.399-1.339-.902-1.746-1.498a3.387 3.387 0 0 1-.3-.531c-.034-.1-.032-.156-.008-.207a.338.338 0 0 1 .097-.1c.129-.086.262-.173.352-.231.162-.104.289-.187.371-.245.309-.216.525-.446.66-.702a1.397 1.397 0 0 0 .069-1.16c-.205-.538-.713-.872-1.329-.872a1.829 1.829 0 0 0-.487.065c.006-.368-.002-.757-.035-1.139-.116-1.344-.587-2.048-1.077-2.61a4.294 4.294 0 0 0-1.095-.881C9.764.216 8.92 0 7.999 0c-.92 0-1.76.216-2.505.641-.412.232-.782.53-1.097.883-.49.562-.96 1.267-1.077 2.61-.033.382-.04.772-.036 1.138a1.83 1.83 0 0 0-.487-.065c-.615 0-1.124.335-1.328.873a1.398 1.398 0 0 0 .067 1.161c.136.256.352.486.66.701.082.058.21.14.371.246l.339.221a.38.38 0 0 1 .109.11c.026.053.027.11-.012.217a3.363 3.363 0 0 1-.295.52c-.398.583-.968 1.077-1.696 1.472-.385.204-.786.34-.955.8-.128.348-.044.743.28 1.075.119.125.257.23.409.31a4.43 4.43 0 0 0 1 .4.66.66 0 0 1 .202.09c.118.104.102.26.259.488.079.118.18.22.296.3.33.229.701.243 1.095.258.355.014.758.03 1.217.18.19.064.389.186.618.328.55.338 1.305.802 2.566.802 1.262 0 2.02-.466 2.576-.806.227-.14.424-.26.609-.321.46-.152.863-.168 1.218-.181.393-.015.764-.03 1.095-.258a1.14 1.14 0 0 0 .336-.368c.114-.192.11-.327.217-.42a.625.625 0 0 1 .19-.087 4.446 4.446 0 0 0 1.014-.404c.16-.087.306-.2.429-.336l.004-.005c.304-.325.38-.709.256-1.047Zm-1.121.602c-.684.378-1.139.337-1.493.565-.3.193-.122.61-.34.76-.269.186-1.061-.012-2.085.326-.845.279-1.384 1.082-2.903 1.082-1.519 0-2.045-.801-2.904-1.084-1.022-.338-1.816-.14-2.084-.325-.218-.15-.041-.568-.341-.761-.354-.228-.809-.187-1.492-.563-.436-.24-.189-.39-.044-.46 2.478-1.199 2.873-3.05 2.89-3.188.022-.166.045-.297-.138-.466-.177-.164-.962-.65-1.18-.802-.36-.252-.52-.503-.402-.812.082-.214.281-.295.49-.295a.93.93 0 0 1 .197.022c.396.086.78.285 1.002.338.027.007.054.01.082.011.118 0 .16-.06.152-.195-.026-.433-.087-1.277-.019-2.066.094-1.084.444-1.622.859-2.097.2-.229 1.137-1.22 2.93-1.22 1.792 0 2.732.987 2.931 1.215.416.475.766 1.013.859 2.098.068.788.009 1.632-.019 2.065-.01.142.034.195.152.195a.35.35 0 0 0 .082-.01c.222-.054.607-.253 1.002-.338a.912.912 0 0 1 .197-.023c.21 0 .409.082.49.295.117.309-.04.56-.401.812-.218.152-1.003.638-1.18.802-.184.169-.16.3-.139.466.018.14.413 1.991 2.89 3.189.147.073.394.222-.041.464Z" fill="#737373"></path>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com/user/charitywater" target="_blank" aria-label="YouTube">
+                <!-- YouTube SVG -->
+                <svg width="24" height="24" fill="gray" viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.479 3.5 12 3.5 12 3.5s-7.479 0-9.391.569a2.994 2.994 0 0 0-2.107 2.117C0 8.104 0 12 0 12s0 3.896.502 5.814a2.994 2.994 0 0 0 2.107 2.117C4.521 20.5 12 20.5 12 20.5s7.479 0 9.391-.569a2.994 2.994 0 0 0 2.107-2.117C24 15.896 24 12 24 12s0-3.896-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#737373"></path></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/charitywater/" target="_blank" aria-label="LinkedIn">
+                <!-- LinkedIn SVG -->
+                <svg width="24" height="24" fill="gray" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.327-.025-3.037-1.849-3.037-1.851 0-2.132 1.445-2.132 2.939v5.667H9.358V9h3.414v1.561h.049c.476-.899 1.637-1.849 3.369-1.849 3.602 0 4.267 2.369 4.267 5.455v6.285zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zm1.777 13.019H3.56V9h3.554v11.452zM22.225 0H1.771C.792 0 0 .771 0 1.723v20.549C0 23.229.792 24 1.771 24h20.451C23.2 24 24 23.229 24 22.271V1.723C24 .771 23.2 0 22.225 0z" fill="#737373"></path></svg>
+            </a>
+        </div>
+        <div id="footer-info">
+            <small>
+                © 2025 | charity: water Donation Processing Center, 230 Franklin Rd., Ste. 11-II, Franklin, TN 37064 | c/o TC Citroen Wells Limited, 5th Floor, 3 Dorset Rise, London EC4Y 8EN | Charity Global, Inc., a US 501 (c)(3) public charity, EIN 22-3936753 and an ANBI in the Netherlands, RSIN 826151656. Charity Global UK Limited is a dual-qualified charity registered in England and Wales, charity number 1169228. Charity Global UK Limited is wholly owned by Charity Global, Inc.
+            </small>
+        </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
