@@ -875,12 +875,15 @@ window.addEventListener('DOMContentLoaded', () => {
   });
   // --- END: Difficulty overlay logic ---
 
-  // Optionally, close overlay if user clicks outside modal (not required)
+  // Allow clicking outside the modal to close the overlay and cancel new game
   if (overlay) {
     overlay.addEventListener('click', (e) => {
+      // If the user clicks directly on the overlay (not the modal or its children)
       if (e.target === overlay) {
-        // Optionally hide overlay here
-        // hideDifficultyOverlay();
+        hideDifficultyOverlay();
+        clearDifficultyDesc();
+        clearActiveBtn();
+        activeDiffBtn = null;
       }
     });
   }
