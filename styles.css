@@ -1207,3 +1207,273 @@ html, body {
         opacity: 0.5;
       }
     }
+
+    /*/////////////////////////////////////////////////////////////////////////////////////////1000w-tall////////////////////////////////////////////////////////////////////////////////////// */
+/* For tall, narrow screens: max-width: 1000px and min-height: 1001px */
+@media (max-width: 1000px) and (min-height: 1101px) {
+  #game-area-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    margin-top: 28px;
+  }
+  #game-container {
+    width: 440px;
+    height: 440px;
+    min-width: 440px;
+    min-height: 440px;
+    max-width: 95vw;
+    max-height: 80vh;
+    padding: 0;
+  }
+  #game-board {
+    width: 380px !important;
+    height: 380px !important;
+    grid-template-columns: repeat(3, 120px) !important;
+    grid-template-rows: repeat(3, 120px) !important;
+    gap: 8px !important;
+    max-width: 95vw;
+    max-height: 80vh;
+  }
+  #game-board.five-by-five {
+    width: 340px !important;
+    height: 340px !important;
+    grid-template-columns: repeat(5, 64px) !important;
+    grid-template-rows: repeat(5, 64px) !important;
+    gap: 5px !important;
+    max-width: 95vw;
+    max-height: 80vh;
+  }
+  .tile {
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    min-height: 120px;
+    max-width: 120px;
+    max-height: 120px;
+  }
+  #game-board.five-by-five .tile {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    min-height: 64px;
+    max-width: 64px;
+    max-height: 64px;
+  }
+  #menu-panel {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    margin-top: 0;
+    min-height: unset;
+    padding: 0;
+    box-sizing: border-box;
+    gap: 24px;
+  }
+  .button-group {
+    align-items: flex-start;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    flex-shrink: 0;
+    gap: 18px;
+    margin-top: 16px;
+  }
+  .button-group button {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 0;
+    font-size: 1.25em;
+    padding: 18px 0;
+  }
+  #play-btn,
+  #new-game-btn,
+  #next-level-btn {
+    font-weight: bold;
+    font-size: 1.35em;
+    padding: 24px !important;
+    margin-bottom: 18px;
+    margin-left: 10px;
+    border-radius: 12px;
+  }
+  #stars-container {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 12px rgba(30, 144, 255, 0.10);
+    border: 4px solid #198ff0;
+    margin-top: 0;
+    padding: 16px 16px 32px 16px;
+    min-width: 140px;
+    width: 200px;
+    height: auto;
+    position: static;
+    box-sizing: border-box;
+    align-items: flex-end;
+    margin-left: auto;
+    margin-right: 0;
+  }
+  #level-stars .star-icon,
+  .star-icon {
+    width: 54px;
+    height: 54px;
+  }
+  #total-stars {
+    position: static;
+    margin-top: 16px;
+    margin-left: 18px;
+    left: unset;
+    right: unset;
+    bottom: unset;
+    font-size: 1.25em;
+    gap: 8px;
+    padding-bottom: 0;
+  }
+  #timer-display {
+    font-size: 1.18em;
+    margin: 10px 0 10px 0;
+  }
+  h1 {
+    font-size: 2em;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+  }
+}
+
+    /*/////////////////////////////////////////////////////////////////////////////////////////1000w-xtra-tall////////////////////////////////////////////////////////////////////////////////////// */
+/* For extra tall, narrow screens: max-width: 1000px and min-height: 1250px */
+@media (max-width: 1000px) and (min-height: 1250px) {
+  #game-area-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 38px;
+    margin-top: 38px;
+  }
+  #game-container {
+    width: 540px;
+    height: 540px;
+    min-width: 540px;
+    min-height: 540px;
+    max-width: 98vw;
+    max-height: 88vh;
+    padding: 0;
+  }
+  #game-board {
+    width: 480px !important;
+    height: 480px !important;
+    grid-template-columns: repeat(3, 152px) !important;
+    grid-template-rows: repeat(3, 152px) !important;
+    gap: 12px !important;
+    max-width: 98vw;
+    max-height: 88vh;
+  }
+  #game-board.five-by-five {
+    width: 410px !important;
+    height: 410px !important;
+    grid-template-columns: repeat(5, 78px) !important;
+    grid-template-rows: repeat(5, 78px) !important;
+    gap: 8px !important;
+    max-width: 98vw;
+    max-height: 88vh;
+  }
+  .tile {
+    width: 152px;
+    height: 152px;
+    min-width: 152px;
+    min-height: 152px;
+    max-width: 152px;
+    max-height: 152px;
+  }
+  #game-board.five-by-five .tile {
+    width: 78px;
+    height: 78px;
+    min-width: 78px;
+    min-height: 78px;
+    max-width: 78px;
+    max-height: 78px;
+  }
+  #menu-panel {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+    margin-top: 0;
+    min-height: unset;
+    padding: 0;
+    box-sizing: border-box;
+    gap: 36px;
+  }
+  .button-group {
+    align-items: flex-start;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    flex-shrink: 0;
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .button-group button {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 0;
+    font-size: 1.45em;
+    padding: 28px 0;
+  }
+  #play-btn,
+  #new-game-btn,
+  #next-level-btn {
+    font-weight: bold;
+    font-size: 1.55em;
+    padding: 32px !important;
+    margin-bottom: 24px;
+    margin-left: 14px;
+    border-radius: 16px;
+  }
+  #stars-container {
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 2px 18px rgba(30, 144, 255, 0.12);
+    border: 6px solid #198ff0;
+    margin-top: 0;
+    padding: 24px 24px 48px 24px;
+    min-width: 180px;
+    width: 260px;
+    height: auto;
+    position: static;
+    box-sizing: border-box;
+    align-items: flex-end;
+    margin-left: auto;
+    margin-right: 0;
+  }
+  #level-stars .star-icon,
+  .star-icon {
+    width: 72px;
+    height: 72px;
+  }
+  #total-stars {
+    position: static;
+    margin-top: 22px;
+    margin-left: 22px;
+    left: unset;
+    right: unset;
+    bottom: unset;
+    font-size: 1.45em;
+    gap: 14px;
+    padding-bottom: 0;
+  }
+  #timer-display {
+    font-size: 1.35em;
+    margin: 16px 0 16px 0;
+  }
+  h1 {
+    font-size: 2.6em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+}
