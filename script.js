@@ -134,8 +134,195 @@ const STAR_THRESHOLDS = [
   [10, 20], // Level 2
   [10, 20], // Level 3
   [10, 20], // Level 4
-  [40, 65] // Level 5 (5x5)
+  [60, 90] // Level 5 (5x5)
 ];
+
+// Helper to generate star HTML for difficulty descriptions
+function starRow(count) {
+  return `<img src="assets/star-y.png" class="star-inline" alt="Star"> x${count}`;
+}
+
+// Difficulty settings with styled HTML descriptions (side-by-side)
+const DIFFICULTIES = {
+  easy: {
+    name: "Easy",
+    desc: [
+      `<div>
+        <b>3x3 levels</b><br>
+        ${starRow(3)}: ≤30s<br>
+        ${starRow(2)}: ≤50s<br>
+        ${starRow(1)}: &gt;50s
+      </div>`,
+      `<div>
+        <b>5x5 level</b><br>
+        ${starRow(3)}: ≤120s<br>
+        ${starRow(2)}: ≤180s<br>
+        ${starRow(1)}: &gt;180s
+      </div>`
+    ],
+    thresholds: [
+      [30, 50], [30, 50], [30, 50], [30, 50], [120, 180]
+    ]
+  },
+  medium: {
+    name: "Medium",
+    desc: [
+      `<div>
+        <b>3x3 levels</b><br>
+        ${starRow(3)}: ≤20s<br>
+        ${starRow(2)}: ≤35s<br>
+        ${starRow(1)}: &gt;35s
+      </div>`,
+      `<div>
+        <b>5x5 level</b><br>
+        ${starRow(3)}: ≤90s<br>
+        ${starRow(2)}: ≤120s<br>
+        ${starRow(1)}: &gt;120s
+      </div>`
+    ],
+    thresholds: [
+      [20, 35], [20, 35], [20, 35], [20, 35], [90, 120]
+    ]
+  },
+  hard: {
+    name: "Hard",
+    desc: [
+      `<div>
+        <b>3x3 levels</b><br>
+        ${starRow(3)}: ≤10s<br>
+        ${starRow(2)}: ≤20s<br>
+        ${starRow(1)}: &gt;20s
+      </div>`,
+      `<div>
+        <b>5x5 level</b><br>
+        ${starRow(3)}: ≤60s<br>
+        ${starRow(2)}: ≤90s<br>
+        ${starRow(1)}: &gt;90s
+      </div>`
+    ],
+    thresholds: [
+      [10, 20], [10, 20], [10, 20], [10, 20], [60, 90]
+    ]
+  }
+};
+
+// Current difficulty (default to medium)
+let currentDifficulty = DIFFICULTIES.medium;
+
+// Show the difficulty overlay
+function showDifficultyOverlay() {
+  const overlay = document.getElementById('difficulty-overlay');
+  if (overlay) overlay.style.display = 'flex';
+}
+
+// Hide the difficulty overlay
+function hideDifficultyOverlay() {
+  const overlay = document.getElementById('difficulty-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+// Set star thresholds based on selected difficulty
+function setDifficulty(diffKey) {
+  currentDifficulty = DIFFICULTIES[diffKey] || DIFFICULTIES.medium;
+  // Update the global STAR_THRESHOLDS array
+  for (let i = 0; i < currentDifficulty.thresholds.length; i++) {
+    STAR_THRESHOLDS[i] = currentDifficulty.thresholds[i];
+  }
+}
+
+// --- Difficulty overlay event listeners ---
+window.addEventListener('DOMContentLoaded', () => {
+  // Fill the board with empty tiles (dirt background)
+  const emptyTiles = Array(gridRows * gridCols).fill(TILE_MAP.E);
+  createGrid(gridRows, gridCols, emptyTiles);
+
+  // Set up menu buttons
+  const newGameBtn = document.getElementById('new-game-btn');
+  const nextLevelBtn = document.getElementById('next-level-btn');
+
+  // --- BEGIN: Timer and stars logic ---
+  resetLevelStarsDisplay();
+  updateTotalStarsDisplay();
+  updateTimerDisplay();
+  // --- END: Timer and stars logic ---
+
+  // Difficulty overlay logic
+  const overlay = document.getElementById('difficulty-overlay');
+  const desc = document.getElementById('difficulty-desc');
+  const btns = document.querySelectorAll('.difficulty-btn');
+
+  // Helper to show a difficulty's description (side-by-side)
+  function showDifficultyDesc(diffKey) {
+    const d = DIFFICULTIES[diffKey] || DIFFICULTIES.medium;
+    desc.innerHTML = d.desc.join('');
+  }
+
+  // Show default (medium) desc on overlay open
+  if (desc) showDifficultyDesc('medium');
+
+  // Show overlay when New Game is clicked
+  if (newGameBtn) {
+    newGameBtn.addEventListener('click', (e) => {
+      showDifficultyOverlay();
+      totalStars = 0;
+      levelStars = [];
+      updateTotalStarsDisplay();
+      // Show default desc every time overlay opens
+      showDifficultyDesc('medium');
+    });
+  }
+
+  // Show description on hover/focus/click, but do not clear on mouseleave/blur
+  btns.forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      const diff = btn.getAttribute('data-diff');
+      showDifficultyDesc(diff);
+    });
+    btn.addEventListener('focus', () => {
+      const diff = btn.getAttribute('data-diff');
+      showDifficultyDesc(diff);
+    });
+    btn.addEventListener('click', () => {
+      const diff = btn.getAttribute('data-diff');
+      setDifficulty(diff);
+      hideDifficultyOverlay();
+      totalStars = 0;
+      levelStars = [];
+      updateTotalStarsDisplay();
+      loadLevel(0);
+    });
+  });
+
+  // Optionally, close overlay if user clicks outside modal
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        // Do nothing or optionally hide overlay
+        // hideDifficultyOverlay();
+      }
+    });
+  }
+
+  // Add style for inline star images in difficulty desc
+  const style = document.createElement('style');
+  style.textContent = `
+    .star-inline {
+      width: 22px;
+      height: 22px;
+      vertical-align: middle;
+      margin-right: 2px;
+      margin-bottom: 2px;
+    }
+    #difficulty-desc b {
+      color: #198ff0;
+      font-weight: 600;
+    }
+    #difficulty-desc {
+      line-height: 1.7;
+    }
+  `;
+  document.head.appendChild(style);
+});
 
 // Helper to update the timer display
 function updateTimerDisplay() {
@@ -680,17 +867,52 @@ window.addEventListener('DOMContentLoaded', () => {
   updateTimerDisplay();
   // --- END: Timer and stars logic ---
 
-  if (newGameBtn) {
-    newGameBtn.addEventListener('click', () => {
-      // Reset total stars and per-level stars
-      totalStars = 0; // Set total stars to zero
-      levelStars = []; // Clear the stars earned for each level
-      updateTotalStarsDisplay(); // Update the display to show zero stars
+  // Difficulty overlay logic
+  const overlay = document.getElementById('difficulty-overlay');
+  const desc = document.getElementById('difficulty-desc');
+  const btns = document.querySelectorAll('.difficulty-btn');
 
-      loadLevel(0); // Always load the first level
-      // nextLevelBtn.disabled = true; // Uncomment when level completion is implemented
+  // Helper to show a difficulty's description (side-by-side)
+  function showDifficultyDesc(diffKey) {
+    const d = DIFFICULTIES[diffKey] || DIFFICULTIES.medium;
+    desc.innerHTML = d.desc.join('');
+  }
+
+  // Show default (medium) desc on overlay open
+  if (desc) showDifficultyDesc('medium');
+
+  // Show overlay when New Game is clicked
+  if (newGameBtn) {
+    newGameBtn.addEventListener('click', (e) => {
+      showDifficultyOverlay();
+      totalStars = 0;
+      levelStars = [];
+      updateTotalStarsDisplay();
+      // Show default desc every time overlay opens
+      showDifficultyDesc('medium');
     });
   }
+
+  // Show description on hover/focus/click, but do not clear on mouseleave/blur
+  btns.forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      const diff = btn.getAttribute('data-diff');
+      showDifficultyDesc(diff);
+    });
+    btn.addEventListener('focus', () => {
+      const diff = btn.getAttribute('data-diff');
+      showDifficultyDesc(diff);
+    });
+    btn.addEventListener('click', () => {
+      const diff = btn.getAttribute('data-diff');
+      setDifficulty(diff);
+      hideDifficultyOverlay();
+      totalStars = 0;
+      levelStars = [];
+      updateTotalStarsDisplay();
+      loadLevel(0);
+    });
+  });
 
   if (nextLevelBtn) {
     nextLevelBtn.addEventListener('click', () => {

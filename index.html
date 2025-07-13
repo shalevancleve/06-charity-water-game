@@ -10,6 +10,20 @@
 <body>
     <!-- Top bar with logo and navigation -->
     <div id="confetti-container"></div>
+    <!-- Difficulty selector overlay -->
+    <div id="difficulty-overlay" style="display:none;">
+      <div id="difficulty-modal">
+        <h2>Difficulty</h2>
+        <div id="difficulty-modal-content">
+          <div id="difficulty-buttons">
+            <button class="difficulty-btn" data-diff="easy">Easy</button>
+            <button class="difficulty-btn" data-diff="medium">Medium</button>
+            <button class="difficulty-btn" data-diff="hard">Hard</button>
+          </div>
+          <div id="difficulty-desc"></div>
+        </div>
+      </div>
+    </div>
     <div id="top-bar">
         <div style="display: flex; align-items: center;">
             <!-- Hamburger menu button for mobile -->

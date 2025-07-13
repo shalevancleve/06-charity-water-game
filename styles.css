@@ -786,7 +786,135 @@ html, body {
       
     }
 
-    /*/////////////////////////////////////////////////////////////////////////////////////////>1000////////////////////////////////////////////////////////////////////////////////////// */
+        /* Difficulty overlay styles */
+#difficulty-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.45);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#difficulty-modal {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(30, 144, 255, 0.18);
+  padding: 28px 12px 20px 12px;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: 520px;
+  max-height: 96vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  transition: min-width 0.2s, min-height 0.2s;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+#difficulty-modal h2 {
+  font-family: 'ivymode', 'Montserrat', sans-serif;
+  font-size: 1.5em;
+  color: #FFC907;
+  margin-bottom: 12px;
+  margin-left: 10px;
+  margin-top: 0;
+}
+
+#difficulty-modal-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  min-height: 0;
+  gap: 18px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+#difficulty-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 120px;
+  align-items: flex-end;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.difficulty-btn {
+  font-family: 'ivymode', 'Montserrat', sans-serif;
+  font-size: 1em;
+  font-weight: bold;
+  background: #FFC907;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+  width: 100px;
+  text-align: center;
+}
+
+.difficulty-btn:hover, .difficulty-btn:focus {
+  background: #198ff0;
+  color: #fff;
+}
+
+#difficulty-desc {
+  min-height: 80px;
+  min-width: 0;
+  font-family: 'Proxima Nova', 'Merriweather', serif;
+  font-size: 1em;
+  color: #333;
+  margin-left: 0;
+  margin-top: 0;
+  align-self: flex-start;
+  max-width: 320px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  transition: min-width 0.2s;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+#difficulty-desc > div {
+  flex: 1 1 0;
+  min-width: 100px;
+  margin-right: 0;
+}
+
+#difficulty-desc b {
+  color: #198ff0;
+  font-weight: 600;
+}
+
+.star-inline {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 2px;
+  margin-bottom: 2px;
+}
+
+#difficulty-desc {
+  line-height: 1.5;
+}
+
+/* Make sure overlay scrolls if needed on very small screens */
+#difficulty-overlay {
+  overflow: auto;
+}
+
+/*/////////////////////////////////////////////////////////////////////////////////////////>1000////////////////////////////////////////////////////////////////////////////////////// */
     /* Screens wider than 1000px */
     @media (min-width: 1001px) {
       #top-bar {
@@ -1108,6 +1236,41 @@ html, body {
         max-width: 98vw;
         padding: 18px 6vw 18px 6vw;
         margin-top: 18px;
+      }
+      #difficulty-modal {
+        max-width: 98vw;
+        padding: 12px 2vw 12px 2vw;
+      }
+      #difficulty-modal-content {
+        flex-direction: column;
+        gap: 8px;
+        min-height: 0;
+      }
+      #difficulty-buttons {
+        flex-direction: row;
+        gap: 8px;
+        min-width: 0;
+        align-items: stretch;
+        justify-content: flex-start;
+        width: 100%;
+      }
+      .difficulty-btn {
+        width: 100%;
+        min-width: 0;
+        font-size: 0.95em;
+        padding: 10px 0;
+      }
+      #difficulty-desc {
+        flex-direction: row;
+        gap: 16px;
+        max-width: 100vw;
+        font-size: 0.95em;
+        min-width: 0;
+        min-height: 0;
+      }
+      #difficulty-desc > div {
+        min-width: 95px;
+        font-size: 0.95em;
       }
     }
 
