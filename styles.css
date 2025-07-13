@@ -94,8 +94,8 @@ html, body {
       background-image: url('assets/background.jpg');
       background-size: cover;
       border-radius: 5px;
-      width: 316px;   /* 3*102px + 2*5px gap = 316px */
-      height: 316px;  /* 3*102px + 2*5px gap = 316px */
+      width: 430px;   /* 3*102px + 2*5px gap = 316px */
+      height: 430px;  /* 3*102px + 2*5px gap = 316px */
       box-sizing: content-box;
     }
 
@@ -381,20 +381,20 @@ html, body {
       font-family: 'Montserrat', sans-serif;
       font-size: 1.1em;
       color: #198ff0;
-      margin: 20px 0 8px 0 !important;
+      margin: 10px 0 8px 0 !important;
       text-align: center;
       font-weight: bold;
     }
 
     #stars-container {
-        background: #fff;
-        border-radius: 18px;
-        box-shadow: 0 2px 12px rgba(30, 144, 255, 0.10);
-        border: 4px solid #198ff0;
-        height: 180px; /* Fixed height for stars container */
-        width: 166px;
-        padding: 8px 8px 24px 8px;
-      }
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 2px 12px rgba(30, 144, 255, 0.10);
+      border: 4px solid #198ff0;
+      height: 180px; /* Fixed height for stars container */
+      width: 166px;
+      padding: 8px 8px 24px 8px;
+    }
 
     #level-stars {
       display: flex;
@@ -506,15 +506,6 @@ html, body {
       color: #888;
       cursor: not-allowed;
       opacity: 0.7;
-    }
-
-    #timer-display {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.1em;
-      color: #198ff0;
-      margin: 10px 0 8px 0;
-      text-align: center;
-      font-weight: bold;
     }
 
     #level-stars {
@@ -754,15 +745,6 @@ html, body {
       opacity: 0.7;
     }
 
-    #timer-display {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.1em;
-      color: #198ff0;
-      margin: 10px 0 8px 0;
-      text-align: center;
-      font-weight: bold;
-    }
-
     #level-stars {
       display: flex;
       justify-content: center;
@@ -812,15 +794,108 @@ html, body {
         flex-direction: row;
         align-items: flex-start;
         justify-content: center;
-        gap: 32px;
-        margin-top: 24px;
+        gap: 48px; /* More space between game and menu */
+        margin-top: 36px;
+      }
+      #game-container {
+        width: 520px;
+        height: 520px;
+        min-width: 520px;
+        min-height: 520px;
+        max-width: 90vw;
+        max-height: 90vw;
+        padding: 0;
+      }
+      #game-board {
+        width: 440px !important;
+        height: 440px !important;
+        grid-template-columns: repeat(3, 140px) !important;
+        grid-template-rows: repeat(3, 140px) !important;
+        gap: 10px !important;
+        position: relative;
+        background-image: url('assets/background.jpg');
+        background-size: cover;
+        border-radius: 5px;
+        box-sizing: content-box;
+      }
+      #game-board.five-by-five {
+        width: 422px !important;
+        height: 422px !important;
+        grid-template-columns: repeat(5, 78px) !important;
+        grid-template-rows: repeat(5, 78px) !important;
+        gap: 8px !important;
+      }
+      .tile {
+        width: 140px;
+        height: 140px;
+        min-width: 140px;
+        min-height: 140px;
+        max-width: 140px;
+        max-height: 140px;
+      }
+      #game-board.five-by-five .tile {
+        width: 78px;
+        height: 78px;
+        min-width: 78px;
+        min-height: 78px;
+        max-width: 78px;
+        max-height: 78px;
+      }
+      .tile img {
+        width: 100%;
+        height: 100%;
       }
       #menu-panel {
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        min-width: 120px;
-        margin-left: 0;
+        min-width: 220px;
+        min-height: 520px;
+        padding: 0 0 0 0;
+        gap: 24px;
+      }
+      .button-group {
+        gap: 18px;
+      }
+      #play-btn,
+      #new-game-btn,
+      #next-level-btn {
+        font-size: 1.5em;
+        padding: 28px 54px;
+        margin-bottom: 24px;
+        border-radius: 14px;
+      }
+      #stars-container {
+        width: 220px !important;
+        height: 192px !important;
+        padding: 18px 18px 38px 18px;
+        border-radius: 24px;
+        border-width: 6px;
+      }
+      #timer-display {
+        font-size: 1.4em;
+        margin: 10px 0 14px 0 !important;
+      }
+      #level-stars {
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+      .star-icon {
+        width: 64px;
+        height: 64px;
+      }
+      #total-stars {
+        font-size: 1.35em;
+        left: 24px;
+        right: 28px;
+        bottom: 24px;
+        gap: 10px;
+        padding-bottom: 0;
+      }
+      #total-stars-count {
+        font-size: 1.25em;
+      }
+      h1 {
+        font-size: 2.5em;
+        margin-top: 3vh;
+        margin-bottom: 0.5em;
       }
     }
 
@@ -935,15 +1010,16 @@ html, body {
       /* Add styles for small screens here */
     }
 
-    /*/////////////////////////////////////////////////////////////////////////////////////////<750////////////////////////////////////////////////////////////////////////////////////// */
+        /*/////////////////////////////////////////////////////////////////////////////////////////<750////////////////////////////////////////////////////////////////////////////////////// */
     /* Screens 750px tall or less */
-    @media (max-height: 750px) {
-      #scroll-wrapper {
-        overflow-y: auto;
-        margin-top: 8px; /* Less space below the top bar */
-        padding-top: 6vh; /* Move content higher up */
+    @media (max-width: 700px) {
+      h1 {
+        font-size: 2em;
+        margin-top: 0em;
+        margin-bottom: 0em;
       }
     }
+
 
     /*/////////////////////////////////////////////////////////////////////////////////////////<600////////////////////////////////////////////////////////////////////////////////////// */
     /* Further reduce for very small screens */
@@ -1094,8 +1170,8 @@ html, body {
         height: 40px;
       }
       h1 {
-        font-size: 0.9em;
-        margin-top: 4em;
+        font-size: 1.2em;
+        margin-top: 0em;
         margin-bottom: 0em;
       }
       #play-btn,
