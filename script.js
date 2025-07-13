@@ -230,100 +230,6 @@ function setDifficulty(diffKey) {
   }
 }
 
-// --- Difficulty overlay event listeners ---
-window.addEventListener('DOMContentLoaded', () => {
-  // Fill the board with empty tiles (dirt background)
-  const emptyTiles = Array(gridRows * gridCols).fill(TILE_MAP.E);
-  createGrid(gridRows, gridCols, emptyTiles);
-
-  // Set up menu buttons
-  const newGameBtn = document.getElementById('new-game-btn');
-  const nextLevelBtn = document.getElementById('next-level-btn');
-
-  // --- BEGIN: Timer and stars logic ---
-  resetLevelStarsDisplay();
-  updateTotalStarsDisplay();
-  updateTimerDisplay();
-  // --- END: Timer and stars logic ---
-
-  // Difficulty overlay logic
-  const overlay = document.getElementById('difficulty-overlay');
-  const desc = document.getElementById('difficulty-desc');
-  const btns = document.querySelectorAll('.difficulty-btn');
-
-  // Helper to show a difficulty's description (side-by-side)
-  function showDifficultyDesc(diffKey) {
-    const d = DIFFICULTIES[diffKey] || DIFFICULTIES.medium;
-    desc.innerHTML = d.desc.join('');
-  }
-
-  // Show default (medium) desc on overlay open
-  if (desc) showDifficultyDesc('medium');
-
-  // Show overlay when New Game is clicked
-  if (newGameBtn) {
-    newGameBtn.addEventListener('click', (e) => {
-      showDifficultyOverlay();
-      totalStars = 0;
-      levelStars = [];
-      updateTotalStarsDisplay();
-      // Show default desc every time overlay opens
-      showDifficultyDesc('medium');
-    });
-  }
-
-  // Show description on hover/focus/click, but do not clear on mouseleave/blur
-  btns.forEach(btn => {
-    btn.addEventListener('mouseenter', () => {
-      const diff = btn.getAttribute('data-diff');
-      showDifficultyDesc(diff);
-    });
-    btn.addEventListener('focus', () => {
-      const diff = btn.getAttribute('data-diff');
-      showDifficultyDesc(diff);
-    });
-    btn.addEventListener('click', () => {
-      const diff = btn.getAttribute('data-diff');
-      setDifficulty(diff);
-      hideDifficultyOverlay();
-      totalStars = 0;
-      levelStars = [];
-      updateTotalStarsDisplay();
-      loadLevel(0);
-    });
-  });
-
-  // Optionally, close overlay if user clicks outside modal
-  if (overlay) {
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        // Do nothing or optionally hide overlay
-        // hideDifficultyOverlay();
-      }
-    });
-  }
-
-  // Add style for inline star images in difficulty desc
-  const style = document.createElement('style');
-  style.textContent = `
-    .star-inline {
-      width: 22px;
-      height: 22px;
-      vertical-align: middle;
-      margin-right: 2px;
-      margin-bottom: 2px;
-    }
-    #difficulty-desc b {
-      color: #198ff0;
-      font-weight: 600;
-    }
-    #difficulty-desc {
-      line-height: 1.7;
-    }
-  `;
-  document.head.appendChild(style);
-});
-
 // Helper to update the timer display
 function updateTimerDisplay() {
   const timerDisplay = document.getElementById('timer-display');
@@ -867,19 +773,29 @@ window.addEventListener('DOMContentLoaded', () => {
   updateTimerDisplay();
   // --- END: Timer and stars logic ---
 
-  // Difficulty overlay logic
+  // --- BEGIN: Difficulty overlay logic ---
   const overlay = document.getElementById('difficulty-overlay');
   const desc = document.getElementById('difficulty-desc');
   const btns = document.querySelectorAll('.difficulty-btn');
 
-  // Helper to show a difficulty's description (side-by-side)
+  // Helper to show a difficulty's description
   function showDifficultyDesc(diffKey) {
     const d = DIFFICULTIES[diffKey] || DIFFICULTIES.medium;
     desc.innerHTML = d.desc.join('');
   }
 
-  // Show default (medium) desc on overlay open
-  if (desc) showDifficultyDesc('medium');
+  // Helper to clear the description
+  function clearDifficultyDesc() {
+    desc.innerHTML = '';
+  }
+
+  // Helper to clear .active from all buttons
+  function clearActiveBtn() {
+    btns.forEach(btn => btn.classList.remove('active'));
+  }
+
+  // Track which button is "active" for touch users
+  let activeDiffBtn = null;
 
   // Show overlay when New Game is clicked
   if (newGameBtn) {
@@ -888,21 +804,63 @@ window.addEventListener('DOMContentLoaded', () => {
       totalStars = 0;
       levelStars = [];
       updateTotalStarsDisplay();
-      // Show default desc every time overlay opens
-      showDifficultyDesc('medium');
+      clearDifficultyDesc();
+      clearActiveBtn();
+      activeDiffBtn = null;
     });
   }
 
-  // Show description on hover/focus/click, but do not clear on mouseleave/blur
+  // Show description on hover/focus, clear on mouseleave/blur (desktop)
   btns.forEach(btn => {
     btn.addEventListener('mouseenter', () => {
-      const diff = btn.getAttribute('data-diff');
-      showDifficultyDesc(diff);
+      showDifficultyDesc(btn.getAttribute('data-diff'));
+      clearActiveBtn();
     });
     btn.addEventListener('focus', () => {
-      const diff = btn.getAttribute('data-diff');
-      showDifficultyDesc(diff);
+      showDifficultyDesc(btn.getAttribute('data-diff'));
+      clearActiveBtn();
     });
+    btn.addEventListener('mouseleave', () => {
+      clearDifficultyDesc();
+    });
+    btn.addEventListener('blur', () => {
+      clearDifficultyDesc();
+    });
+
+    // Touch/mobile: tap once to show desc (and highlight), tap again to select
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Prevents mouse events after touch
+      const diff = btn.getAttribute('data-diff');
+      if (activeDiffBtn === btn) {
+        // Second tap: select difficulty
+        setDifficulty(diff);
+        hideDifficultyOverlay();
+        totalStars = 0;
+        levelStars = [];
+        updateTotalStarsDisplay();
+        loadLevel(0);
+        activeDiffBtn = null;
+        clearDifficultyDesc();
+        clearActiveBtn();
+      } else {
+        // First tap: just show description and highlight
+        activeDiffBtn = btn;
+        showDifficultyDesc(diff);
+        clearActiveBtn();
+        btn.classList.add('active');
+        // Remove desc and highlight if user taps outside buttons
+        document.addEventListener('touchstart', function clearOnOutside(touchEvt) {
+          if (!btn.contains(touchEvt.target)) {
+            activeDiffBtn = null;
+            clearDifficultyDesc();
+            clearActiveBtn();
+            document.removeEventListener('touchstart', clearOnOutside);
+          }
+        });
+      }
+    });
+
+    // Desktop: click selects immediately (for accessibility)
     btn.addEventListener('click', () => {
       const diff = btn.getAttribute('data-diff');
       setDifficulty(diff);
@@ -911,15 +869,52 @@ window.addEventListener('DOMContentLoaded', () => {
       levelStars = [];
       updateTotalStarsDisplay();
       loadLevel(0);
+      clearDifficultyDesc();
+      clearActiveBtn();
     });
   });
+  // --- END: Difficulty overlay logic ---
 
+  // Optionally, close overlay if user clicks outside modal (not required)
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        // Optionally hide overlay here
+        // hideDifficultyOverlay();
+      }
+    });
+  }
+
+  // Add style for inline star images in difficulty desc and .active button
+  const style = document.createElement('style');
+  style.textContent = `
+    .star-inline {
+      width: 22px;
+      height: 22px;
+      vertical-align: middle;
+      margin-right: 2px;
+      margin-bottom: 2px;
+    }
+    #difficulty-desc b {
+      color: #198ff0;
+      font-weight: 600;
+    }
+    #difficulty-desc {
+      line-height: 1.7;
+    }
+    .difficulty-btn.active {
+      outline: 2px solid #198ff0;
+      background: #e6f4ff;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Next level button logic (not related to difficulty overlay)
   if (nextLevelBtn) {
     nextLevelBtn.addEventListener('click', () => {
       // Only go to next level if not at last level
       if (currentLevel < LEVELS.length - 1) {
         loadLevel(currentLevel + 1);
-        // nextLevelBtn.disabled = true; // Uncomment when level completion is implemented
       }
     });
     nextLevelBtn.disabled = true; // Always disabled for now
