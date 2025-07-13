@@ -27,7 +27,6 @@ const TILE_MAP = {
 };
 
 const preloadedImages = {};
-
 // Preload all tile images and keep them in memory
 function preloadTileImages() {
   for (const key in TILE_MAP) {
@@ -52,8 +51,25 @@ function preloadTileImages() {
     }
   }
 }
-
 preloadTileImages();
+
+const preloadedSounds = {};
+// Preload all sound effects and store them in an object
+function preloadSounds() {
+  // List of sound effect IDs and their file paths
+  const sounds = {
+    "water-drop": "audio/water-drop.wav",
+    "cheer": "audio/cheer.wav"
+    // Add more sounds here if you have them
+  };
+
+  for (const id in sounds) {
+    const audio = new Audio(sounds[id]);
+    audio.preload = "auto";
+    preloadedSounds[id] = audio;
+  }
+}
+preloadSounds();
 
 // Levels: each level is an array of tile keys
 const LEVELS = [
@@ -797,9 +813,19 @@ function showConfetti() {
 }
 
 function playSound(name) {
-  const sound = document.getElementById(name);
-  sound.currentTime = 0;
-  sound.play();
+  // Use the preloaded sound if available
+  const sound = preloadedSounds[name];
+  if (sound) {
+    sound.currentTime = 0; // Rewind to start
+    sound.play();
+  } else {
+    // Fallback: try to get it from the DOM if not preloaded
+    const domSound = document.getElementById(name);
+    if (domSound) {
+      domSound.currentTime = 0;
+      domSound.play();
+    }
+  }
 }
 
 // On page load, fill the board with empty tiles only
@@ -1103,6 +1129,8 @@ let hintUsed = [];
 
 // Show the hint overlay (with warning if first time)
 function showHintOverlay() {
+  if (isSolved) return; // Don't show hint if puzzle is already solved
+
   const overlay = document.getElementById('hint-overlay');
   const warning = document.getElementById('hint-warning');
   const hintImgContainer = document.getElementById('hint-image-container');
