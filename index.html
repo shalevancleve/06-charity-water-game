@@ -10,6 +10,19 @@
 <body>
     <!-- Top bar with logo and navigation -->
     <div id="confetti-container"></div>
+    <!-- New Game confirmation overlay -->
+    <div id="confirm-newgame-overlay" style="display:none;">
+      <div id="confirm-newgame-modal">
+        <h2>Are you sure?</h2>
+        <div id="confirm-newgame-message">
+          Starting a new game now will result in you losing all your progress for your current playthrough.
+        </div>
+        <div id="confirm-newgame-buttons">
+          <button id="confirm-newgame-yes">Yes</button>
+          <button id="confirm-newgame-no">No</button>
+        </div>
+      </div>
+    </div>
     <!-- Difficulty selector overlay -->
     <div id="difficulty-overlay" style="display:none;">
       <div id="difficulty-modal">
@@ -125,6 +138,8 @@
         </div>
     </footer>
 
+    <audio id="water-drop" src="audio/water-drop.wav" preload="auto"></audio>
+    <audio id="cheer" src="audio/cheer.wav" preload="auto"></audio>
     <script src="script.js" defer></script>
 </body>
 </html>

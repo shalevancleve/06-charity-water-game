@@ -296,9 +296,11 @@ function checkForWin() {
     if (nextLevelBtn) {
       if (currentLevel < LEVELS.length - 1) {
         nextLevelBtn.disabled = false;
+        playSound("water-drop"); // Play water drop sound on win
       } else {
         nextLevelBtn.disabled = true; // Stay grayed out on last level
         showConfetti(); // Show confetti on final win!
+        playSound("cheer");
       }
     }
     
@@ -492,6 +494,8 @@ function loadLevel(levelIndex) {
   }
   // Reset solved flag when loading a new level
   isSolved = false;
+  // Mark that a game is in progress
+  gameInProgress = true;
 
   // --- BEGIN: Timer and stars logic ---
   resetLevelStarsDisplay();
@@ -757,6 +761,12 @@ function showConfetti() {
   }, 3200); // Slightly longer to match slower pieces
 }
 
+function playSound(name) {
+  const sound = document.getElementById(name);
+  sound.currentTime = 0;
+  sound.play();
+}
+
 // On page load, fill the board with empty tiles only
 window.addEventListener('DOMContentLoaded', () => {
   // Fill the board with empty tiles (dirt background)
@@ -777,6 +787,71 @@ window.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('difficulty-overlay');
   const desc = document.getElementById('difficulty-desc');
   const btns = document.querySelectorAll('.difficulty-btn');
+
+  // --- BEGIN: New Game confirmation overlay logic ---
+  const confirmOverlay = document.getElementById('confirm-newgame-overlay');
+  const confirmYes = document.getElementById('confirm-newgame-yes');
+  const confirmNo = document.getElementById('confirm-newgame-no');
+
+  // Helper to reset the confirmation overlay state (so it always works)
+  function resetConfirmOverlay() {
+    hideConfirmNewGameOverlay();
+  }
+
+  // Show overlay when New Game is clicked
+  if (newGameBtn) {
+    newGameBtn.addEventListener('click', (e) => {
+      // Only show warning if a game is in progress and NOT after the final level is solved
+      // (currentLevel is last level AND isSolved) means don't show warning
+      if (
+        gameInProgress &&
+        !(isSolved && currentLevel === LEVELS.length - 1)
+      ) {
+        showConfirmNewGameOverlay();
+      } else {
+        // No game in progress, or just finished last level, go straight to difficulty selection
+        showDifficultyOverlay();
+        totalStars = 0;
+        levelStars = [];
+        updateTotalStarsDisplay();
+        clearDifficultyDesc();
+        clearActiveBtn();
+        activeDiffBtn = null;
+      }
+    });
+  }
+
+  // Handle "Yes" button: proceed to difficulty selection
+  if (confirmYes) {
+    confirmYes.addEventListener('click', () => {
+      hideConfirmNewGameOverlay();
+      showDifficultyOverlay();
+      totalStars = 0;
+      levelStars = [];
+      updateTotalStarsDisplay();
+      clearDifficultyDesc();
+      clearActiveBtn();
+      activeDiffBtn = null;
+      // Reset progress state, but keep gameInProgress true until a new level is loaded
+    });
+  }
+
+  // Handle "No" button: just close the confirmation overlay
+  if (confirmNo) {
+    confirmNo.addEventListener('click', () => {
+      hideConfirmNewGameOverlay();
+    });
+  }
+
+  // Allow clicking outside the modal to close the confirmation overlay
+  if (confirmOverlay) {
+    confirmOverlay.addEventListener('click', (e) => {
+      if (e.target === confirmOverlay) {
+        hideConfirmNewGameOverlay();
+      }
+    });
+  }
+  // --- END: New Game confirmation overlay logic ---
 
   // Helper to show a difficulty's description
   function showDifficultyDesc(diffKey) {
@@ -800,13 +875,23 @@ window.addEventListener('DOMContentLoaded', () => {
   // Show overlay when New Game is clicked
   if (newGameBtn) {
     newGameBtn.addEventListener('click', (e) => {
-      showDifficultyOverlay();
-      totalStars = 0;
-      levelStars = [];
-      updateTotalStarsDisplay();
-      clearDifficultyDesc();
-      clearActiveBtn();
-      activeDiffBtn = null;
+      // Only show warning if a game is in progress and NOT after the final level is solved
+      // (currentLevel is last level AND isSolved) means don't show warning
+      if (
+        gameInProgress &&
+        !(isSolved && currentLevel === LEVELS.length - 1)
+      ) {
+        showConfirmNewGameOverlay();
+      } else {
+        // No game in progress, or just finished last level, go straight to difficulty selection
+        showDifficultyOverlay();
+        totalStars = 0;
+        levelStars = [];
+        updateTotalStarsDisplay();
+        clearDifficultyDesc();
+        clearActiveBtn();
+        activeDiffBtn = null;
+      }
     });
   }
 
@@ -923,3 +1008,23 @@ window.addEventListener('DOMContentLoaded', () => {
     nextLevelBtn.disabled = true; // Always disabled for now
   }
 });
+
+// Track if a game is in progress (true if a level has been started and not finished)
+// BEGINNER NOTE: We set this to false at the start so the first New Game works!
+let gameInProgress = false;
+
+// BEGINNER NOTE: This function shows the "Are you sure?" overlay for New Game
+function showConfirmNewGameOverlay() {
+  const overlay = document.getElementById('confirm-newgame-overlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+  }
+}
+
+// BEGINNER NOTE: This function hides the "Are you sure?" overlay for New Game
+function hideConfirmNewGameOverlay() {
+  const overlay = document.getElementById('confirm-newgame-overlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+}

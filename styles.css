@@ -916,6 +916,94 @@ html, body {
   overflow: auto;
 }
 
+/* Confirmation overlay for New Game */
+#confirm-newgame-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.45);
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#confirm-newgame-modal {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(30, 144, 255, 0.18);
+  padding: 32px 18px 24px 18px;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: 420px;
+  max-height: 96vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+#confirm-newgame-modal h2 {
+  font-family: 'ivymode', 'Montserrat', sans-serif;
+  font-size: 1.4em;
+  color: #FFC907;
+  margin-bottom: 16px;
+  margin-top: 0;
+  text-align: center;
+}
+
+#confirm-newgame-message {
+  font-family: 'Proxima Nova', 'Merriweather', serif;
+  font-size: 1.08em;
+  color: #333;
+  margin-bottom: 24px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+#confirm-newgame-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  justify-content: center;
+  width: 100%;
+}
+
+#confirm-newgame-yes,
+#confirm-newgame-no {
+  font-family: 'ivymode', 'Montserrat', sans-serif;
+  font-size: 1.1em;
+  font-weight: bold;
+  background: #FFC907;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 32px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+
+#confirm-newgame-yes:hover,
+#confirm-newgame-yes:focus {
+  background: #198ff0;
+  color: #fff;
+}
+
+#confirm-newgame-no:hover,
+#confirm-newgame-no:focus {
+  background: #e0e0e0;
+  color: #000;
+}
+
+/* Hide confirmation overlay by default */
+#confirm-newgame-overlay {
+  display: none;
+}
+
 /*/////////////////////////////////////////////////////////////////////////////////////////>1000////////////////////////////////////////////////////////////////////////////////////// */
     /* Screens wider than 1000px */
     @media (min-width: 1001px) {
