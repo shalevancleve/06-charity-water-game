@@ -786,7 +786,8 @@ html, body {
       
     }
 
-        /* Difficulty overlay styles */
+    /* Hint overlay styles */
+#hint-overlay,
 #difficulty-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -928,7 +929,8 @@ html, body {
   justify-content: center;
 }
 
-#confirm-newgame-modal {
+#confirm-newgame-modal,
+#hint-modal {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 24px rgba(30, 144, 255, 0.18);
@@ -946,6 +948,7 @@ html, body {
   overflow: auto;
 }
 
+#hint-modal h2,
 #confirm-newgame-modal h2 {
   font-family: 'ivymode', 'Montserrat', sans-serif;
   font-size: 1.4em;
@@ -955,6 +958,7 @@ html, body {
   text-align: center;
 }
 
+#hint-warning-message,
 #confirm-newgame-message {
   font-family: 'Proxima Nova', 'Merriweather', serif;
   font-size: 1.08em;
@@ -964,6 +968,7 @@ html, body {
   line-height: 1.6;
 }
 
+#hint-warning-buttons,
 #confirm-newgame-buttons {
   display: flex;
   flex-direction: row;
@@ -972,6 +977,9 @@ html, body {
   width: 100%;
 }
 
+#hint-yes-btn,
+#hint-no-btn,
+#hint-close-btn,
 #confirm-newgame-yes,
 #confirm-newgame-no {
   font-family: 'ivymode', 'Montserrat', sans-serif;
@@ -987,21 +995,63 @@ html, body {
   outline: none;
 }
 
+#hint-yes-btn:hover,
+#hint-yes-btn:focus,
 #confirm-newgame-yes:hover,
 #confirm-newgame-yes:focus {
   background: #198ff0;
   color: #fff;
 }
 
+#hint-no-btn:hover,
+#hint-no-btn:focus,
+#hint-close-btn:hover,
+#hint-close-btn:focus,
 #confirm-newgame-no:hover,
 #confirm-newgame-no:focus {
   background: #e0e0e0;
   color: #000;
 }
 
-/* Hide confirmation overlay by default */
+#hint-image-container,
 #confirm-newgame-overlay {
   display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#hint-image {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Larger hint overlay for desktop */
+@media (min-width: 1001px) {
+  #hint-modal {
+    max-width: 520px;
+    padding: 40px 28px 32px 28px;
+    border-radius: 24px;
+  }
+  
+  #hint-modal h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+  }
+  
+  #hint-warning-message {
+    font-size: 1.2em;
+    margin-bottom: 32px;
+  }
+  
+  #hint-yes-btn,
+  #hint-no-btn,
+  #hint-close-btn {
+    font-size: 1.25em;
+    padding: 16px 38px;
+  }
 }
 
 /*/////////////////////////////////////////////////////////////////////////////////////////>1000////////////////////////////////////////////////////////////////////////////////////// */

@@ -283,10 +283,19 @@ function updateTotalStarsDisplay() {
 
 // Calculate stars earned for a level based on elapsedSeconds
 function calculateStars(levelIndex, seconds) {
-  const [threeStar, twoStar] = STAR_THRESHOLDS[levelIndex] || [30, 60];
-  if (seconds <= threeStar) return 3;
-  if (seconds <= twoStar) return 2;
-  return 1;
+  // If hint was used for this level, max stars is 2
+  if (hintUsed[levelIndex]) {
+    const [threeStar, twoStar] = STAR_THRESHOLDS[levelIndex] || [30, 60];
+    if (seconds <= threeStar) return 2; // Would be 3 stars, but limited to 2
+    if (seconds <= twoStar) return 2;
+    return 1;
+  } else {
+    // Normal star calculation if no hint used
+    const [threeStar, twoStar] = STAR_THRESHOLDS[levelIndex] || [30, 60];
+    if (seconds <= threeStar) return 3;
+    if (seconds <= twoStar) return 2;
+    return 1;
+  }
 }
 
 // This function checks if the board is solved and enables the next level button
@@ -519,6 +528,11 @@ function loadLevel(levelIndex) {
   startTimer();
   // --- END: Timer and stars logic ---
   updateLevelLabel();
+  // Show the hint button when a game is loaded
+  const hintBtn = document.getElementById('hint-btn');
+  if (hintBtn) {
+    hintBtn.style.display = 'inline-flex';
+  }
   // Reset hint overlay state for this level
   // (do not reset hintUsed here, so user can't "cheat" by reloading)
   hideHintOverlay();
