@@ -6,7 +6,7 @@ html, body {
     }
 
     body {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       background: #52a6e2;
       display: flex;
       flex-direction: column;
@@ -118,7 +118,7 @@ html, body {
     }
 
     h1, h2, h3, h4, h5, h6 {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-weight: 700;
       margin-top: 1.5em;
       margin-bottom: 0.5em;
@@ -126,7 +126,7 @@ html, body {
     }
 
     p {
-      font-family: 'Merriweather', serif;
+      font-family: 'Proxima Nova', 'Merriweather', serif;
       font-weight: 400;
       font-size: 1rem;
       color: #333;
@@ -168,7 +168,7 @@ html, body {
     }
 
     .nav-link {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -351,7 +351,7 @@ html, body {
     #next-level-btn {
       background: #FFC907;
       color: #000000;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-weight: bold;
       font-size: 1.25em;
       border: none;
@@ -378,7 +378,7 @@ html, body {
     }
 
     #timer-display {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-size: 1.1em;
       color: #198ff0;
       margin: 10px 0 8px 0 !important;
@@ -414,7 +414,7 @@ html, body {
       display: flex;
       align-items: flex-end; /* Align image and text to the bottom */
       gap: 6px;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-size: 1.15em;
       color: #FFC907;
       font-weight: bold;
@@ -439,7 +439,7 @@ html, body {
       padding: 12px 0;
       font-weight: bold;
       font-size: 1.08em;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       cursor: pointer;
       margin-top: 6px;
       transition: background 0.2s;
@@ -455,7 +455,7 @@ html, body {
       color: #888;
       text-align: center;
       margin-top: 0.5em;
-      font-family: 'Merriweather', serif;
+      font-family: 'Proxima Nova', 'Merriweather', serif;
     }
 
     #game-area-wrapper {
@@ -482,7 +482,7 @@ html, body {
     #next-level-btn {
       background: #FFC907;
       color: #000000;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-weight: bold;
       font-size: 1.25em;
       border: none;
@@ -526,7 +526,7 @@ html, body {
       display: flex;
       align-items: flex-end; /* Align image and text to the bottom */
       gap: 6px;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-size: 1.15em;
       color: #FFC907;
       font-weight: bold;
@@ -558,6 +558,7 @@ html, body {
     }
 
     .about-card h1 {
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-size: 2.1em;
       margin-bottom: 0.5em;
       color: #FFC907;
@@ -565,11 +566,12 @@ html, body {
     }
 
     .about-lead {
+      font-family: 'Proxima Nova', 'Merriweather', serif;
       font-size: 1.15em;
       color: #333;
       text-align: center;
       margin-bottom: 1.5em;
-      font-family: 'Merriweather', serif;
+      font-weight: 400;
     }
 
     .about-section {
@@ -585,10 +587,11 @@ html, body {
     }
 
     .about-section p, .about-section ul {
+      font-family: 'Proxima Nova', 'Merriweather', serif;
       color: #444;
       font-size: 1em;
       margin: 0.2em 0 0.7em 0;
-      font-family: 'Merriweather', serif;
+      font-weight: 400;
     }
 
     .about-list {
@@ -620,6 +623,7 @@ html, body {
     }
 
     .signup-card h1 {
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-size: 2em;
       margin-bottom: 0.5em;
       color: #FFC907;
@@ -627,11 +631,12 @@ html, body {
     }
 
     .signup-lead {
+      font-family: 'Proxima Nova', 'Merriweather', serif;
       font-size: 1.08em;
       color: #333;
       text-align: center;
       margin-bottom: 1.2em;
-      font-family: 'Merriweather', serif;
+      font-weight: 400;
     }
 
     .signup-form {
@@ -644,7 +649,7 @@ html, body {
     }
 
     .signup-form label {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-weight: 600;
       color: #FFC907;
       margin-bottom: 2px;
@@ -653,11 +658,11 @@ html, body {
 
     .signup-form input[type="text"],
     .signup-form input[type="email"] {
+      font-family: 'Proxima Nova', 'Merriweather', serif;
       padding: 10px 12px;
       border: 1.5px solid #cdeffd;
       border-radius: 6px;
       font-size: 1em;
-      font-family: 'Merriweather', serif;
       background: #f8fcff;
       transition: border 0.2s;
     }
@@ -669,6 +674,7 @@ html, body {
     }
 
     .signup-form button {
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       background: #FFC907;
       color: #fff;
       border: none;
@@ -676,7 +682,6 @@ html, body {
       padding: 12px 0;
       font-weight: bold;
       font-size: 1.08em;
-      font-family: 'Montserrat', sans-serif;
       cursor: pointer;
       margin-top: 6px;
       transition: background 0.2s;
@@ -688,11 +693,11 @@ html, body {
     }
 
     .signup-note {
+      font-family: 'Proxima Nova', 'Merriweather', serif;
       font-size: 0.95em;
       color: #888;
       text-align: center;
       margin-top: 0.5em;
-      font-family: 'Merriweather', serif;
     }
 
     #game-area-wrapper {
@@ -719,7 +724,7 @@ html, body {
     #next-level-btn {
       background: #FFC907;
       color: #000000;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-weight: bold;
       font-size: 1.25em;
       border: none;
@@ -763,7 +768,7 @@ html, body {
       display: flex;
       align-items: flex-end; /* Align image and text to the bottom */
       gap: 6px;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'ivymode', 'Montserrat', sans-serif;
       font-size: 1.15em;
       color: #FFC907;
       font-weight: bold;
