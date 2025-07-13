@@ -699,6 +699,57 @@ function createGrid(rows, cols, tileData) {
   }
 }
 
+function showConfetti() {
+  // Array of bright colors for confetti
+  const colors = ['#FFD700', '#FF69B4', '#00CFFF', '#7CFC00', '#FF6347', '#FFB347'];
+  const confettiContainer = document.getElementById('confetti-container');
+  if (!confettiContainer) return;
+
+  // Remove old confetti if any
+  confettiContainer.innerHTML = '';
+
+  // Create more confetti pieces (120 instead of 50)
+  for (let i = 0; i < 120; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    // Random horizontal position
+    confetti.style.left = `${Math.random() * 100}vw`;
+    // Start a bit above the screen
+    confetti.style.top = `-${Math.random() * 40}px`;
+    // Random rotation
+    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+    // Make some confetti bigger
+    const size = 10 + Math.random() * 18; // 10px to 28px
+    confetti.style.width = `${size}px`;
+    confetti.style.height = `${size}px`;
+    // Random animation duration for different falling speeds
+    confetti.style.animationDuration = `${2 + Math.random() * 1.8}s`;
+    confettiContainer.appendChild(confetti);
+  }
+
+  // Remove confetti after animation
+  setTimeout(() => {
+    confettiContainer.innerHTML = '';
+  }, 3200); // Slightly longer to match slower pieces
+}
+
+function playSound(name) {
+  // Use the preloaded sound if available
+  const sound = preloadedSounds[name];
+  if (sound) {
+    sound.currentTime = 0; // Rewind to start
+    sound.play();
+  } else {
+    // Fallback: try to get it from the DOM if not preloaded
+    const domSound = document.getElementById(name);
+    if (domSound) {
+      domSound.currentTime = 0;
+      domSound.play();
+    }
+  }
+}
+
 board.addEventListener('click', (e) => {
   // Block interaction if animating or solved
   if (isAnimating || isSolved) return;
@@ -777,55 +828,79 @@ window.addEventListener('resize', () => {
   }
 });
 
-function showConfetti() {
-  // Array of bright colors for confetti
-  const colors = ['#FFD700', '#FF69B4', '#00CFFF', '#7CFC00', '#FF6347', '#FFB347'];
-  const confettiContainer = document.getElementById('confetti-container');
-  if (!confettiContainer) return;
+// Track if a game is in progress (true if a level has been started and not finished)
+// BEGINNER NOTE: We set this to false at the start so the first New Game works!
+let gameInProgress = false;
 
-  // Remove old confetti if any
-  confettiContainer.innerHTML = '';
-
-  // Create more confetti pieces (120 instead of 50)
-  for (let i = 0; i < 120; i++) {
-    const confetti = document.createElement('div');
-    confetti.className = 'confetti';
-    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-    // Random horizontal position
-    confetti.style.left = `${Math.random() * 100}vw`;
-    // Start a bit above the screen
-    confetti.style.top = `-${Math.random() * 40}px`;
-    // Random rotation
-    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-    // Make some confetti bigger
-    const size = 10 + Math.random() * 18; // 10px to 28px
-    confetti.style.width = `${size}px`;
-    confetti.style.height = `${size}px`;
-    // Random animation duration for different falling speeds
-    confetti.style.animationDuration = `${2 + Math.random() * 1.8}s`;
-    confettiContainer.appendChild(confetti);
+// BEGINNER NOTE: This function shows the "Are you sure?" overlay for New Game
+function showConfirmNewGameOverlay() {
+  const overlay = document.getElementById('confirm-newgame-overlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
   }
-
-  // Remove confetti after animation
-  setTimeout(() => {
-    confettiContainer.innerHTML = '';
-  }, 3200); // Slightly longer to match slower pieces
 }
 
-function playSound(name) {
-  // Use the preloaded sound if available
-  const sound = preloadedSounds[name];
-  if (sound) {
-    sound.currentTime = 0; // Rewind to start
-    sound.play();
-  } else {
-    // Fallback: try to get it from the DOM if not preloaded
-    const domSound = document.getElementById(name);
-    if (domSound) {
-      domSound.currentTime = 0;
-      domSound.play();
-    }
+// BEGINNER NOTE: This function hides the "Are you sure?" overlay for New Game
+function hideConfirmNewGameOverlay() {
+  const overlay = document.getElementById('confirm-newgame-overlay');
+  if (overlay) {
+    overlay.style.display = 'none';
   }
+}
+
+// Track if hint was used for each level
+let hintUsed = [];
+
+// Show the hint overlay (with warning if first time)
+function showHintOverlay() {
+  if (isSolved) return; // Don't show hint if puzzle is already solved
+
+  const overlay = document.getElementById('hint-overlay');
+  const warning = document.getElementById('hint-warning');
+  const hintImgContainer = document.getElementById('hint-image-container');
+  if (!overlay || !warning || !hintImgContainer) return;
+
+  // If hint already used for this level, skip warning and show image
+  if (hintUsed[currentLevel]) {
+    warning.style.display = 'none';
+    hintImgContainer.style.display = 'flex';
+    setHintImage();
+  } else {
+    warning.style.display = 'block';
+    hintImgContainer.style.display = 'none';
+  }
+  overlay.style.display = 'flex';
+}
+
+// Hide the hint overlay
+function hideHintOverlay() {
+  const overlay = document.getElementById('hint-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+// Set the hint image for the current level
+function setHintImage() {
+  const hintImg = document.getElementById('hint-image');
+  if (!hintImg) return;
+  // Hint images should be named "hint-1.png", "hint-2.png", ..., "hint-5.png" in the img folder
+  const imgNum = currentLevel + 1;
+  hintImg.src = `img/hint-${imgNum}.png`;
+  hintImg.alt = `Hint for Level ${imgNum}`;
+}
+
+const difficultyOverlay = document.getElementById('difficulty-overlay');
+const difficultyModal = document.getElementById('difficulty-modal');
+
+if (difficultyOverlay && difficultyModal) {
+  difficultyOverlay.addEventListener('click', (e) => {
+    // Only close if the user clicked the overlay, not the modal box
+    if (e.target === difficultyOverlay) {
+      hideDifficultyOverlay();
+      clearDifficultyDesc();
+      clearActiveBtn();
+      activeDiffBtn = null;
+    }
+  });
 }
 
 // On page load, fill the board with empty tiles only
@@ -1103,63 +1178,3 @@ window.addEventListener('DOMContentLoaded', () => {
     nextLevelBtn.disabled = true; // Always disabled for now
   }
 });
-
-// Track if a game is in progress (true if a level has been started and not finished)
-// BEGINNER NOTE: We set this to false at the start so the first New Game works!
-let gameInProgress = false;
-
-// BEGINNER NOTE: This function shows the "Are you sure?" overlay for New Game
-function showConfirmNewGameOverlay() {
-  const overlay = document.getElementById('confirm-newgame-overlay');
-  if (overlay) {
-    overlay.style.display = 'flex';
-  }
-}
-
-// BEGINNER NOTE: This function hides the "Are you sure?" overlay for New Game
-function hideConfirmNewGameOverlay() {
-  const overlay = document.getElementById('confirm-newgame-overlay');
-  if (overlay) {
-    overlay.style.display = 'none';
-  }
-}
-
-// Track if hint was used for each level
-let hintUsed = [];
-
-// Show the hint overlay (with warning if first time)
-function showHintOverlay() {
-  if (isSolved) return; // Don't show hint if puzzle is already solved
-
-  const overlay = document.getElementById('hint-overlay');
-  const warning = document.getElementById('hint-warning');
-  const hintImgContainer = document.getElementById('hint-image-container');
-  if (!overlay || !warning || !hintImgContainer) return;
-
-  // If hint already used for this level, skip warning and show image
-  if (hintUsed[currentLevel]) {
-    warning.style.display = 'none';
-    hintImgContainer.style.display = 'flex';
-    setHintImage();
-  } else {
-    warning.style.display = 'block';
-    hintImgContainer.style.display = 'none';
-  }
-  overlay.style.display = 'flex';
-}
-
-// Hide the hint overlay
-function hideHintOverlay() {
-  const overlay = document.getElementById('hint-overlay');
-  if (overlay) overlay.style.display = 'none';
-}
-
-// Set the hint image for the current level
-function setHintImage() {
-  const hintImg = document.getElementById('hint-image');
-  if (!hintImg) return;
-  // Hint images should be named "hint-1.png", "hint-2.png", ..., "hint-5.png" in the img folder
-  const imgNum = currentLevel + 1;
-  hintImg.src = `img/hint-${imgNum}.png`;
-  hintImg.alt = `Hint for Level ${imgNum}`;
-}
