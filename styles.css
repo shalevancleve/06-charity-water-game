@@ -1081,15 +1081,18 @@ html, body {
       }
     }
 
-    /*/////////////////////////////////////////////////////////////////////////////////////////<1000////////////////////////////////////////////////////////////////////////////////////// */
-    /* Media queries for ≤1000px wide */
-    @media (max-width: 1000px) {
+    @media (max-width: 1150px) {
       #navbar {
         display: none !important; /* Hide navbar */
       }
       #hamburger-menu {
         display: flex; /* Show hamburger */
       }
+    }
+
+    /*/////////////////////////////////////////////////////////////////////////////////////////<1000////////////////////////////////////////////////////////////////////////////////////// */
+    /* Media queries for ≤1000px wide */
+    @media (max-width: 1000px) {
       #game-area-wrapper {
         flex-direction: column;
         align-items: center;
@@ -1206,6 +1209,19 @@ html, body {
     /*/////////////////////////////////////////////////////////////////////////////////////////<600////////////////////////////////////////////////////////////////////////////////////// */
     /* Further reduce for very small screens */
     @media (max-width: 600px) {
+      #logo {
+        height: 28px; /* Smaller logo for medium screens */
+      }
+      #hamburger-menu {
+        width: 24px;
+        height: 24px;
+      }
+      #hamburger-menu span {
+        width: 18px;
+        height: 4px;
+        margin: 2px 0;
+      }
+
       #menu-panel {
         display: flex;
         flex-direction: row;
