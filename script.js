@@ -470,6 +470,23 @@ function scrambleLevelByMoves(levelKeys, rows, cols, moves = 300, minOutOfPlace 
   return board;
 }
 
+// Helper to update the level label inside the h1 title
+function updateLevelLabel() {
+  const label = document.getElementById('level-label');
+  if (!label) return;
+  // For the last level, show "Challenge Level"
+  if (currentLevel === LEVELS.length - 1) {
+    label.textContent = ' Challenge Level';
+  } else {
+    label.textContent = `Level ${currentLevel + 1}`;
+  }
+  // Show the hint button when a game is loaded
+  const hintBtn = document.getElementById('hint-btn');
+  if (hintBtn) {
+    hintBtn.style.display = 'inline-flex';
+  }
+}
+
 // Set grid size and create grid for a level
 function loadLevel(levelIndex) {
   currentLevel = levelIndex;
@@ -501,6 +518,10 @@ function loadLevel(levelIndex) {
   resetLevelStarsDisplay();
   startTimer();
   // --- END: Timer and stars logic ---
+  updateLevelLabel();
+  // Reset hint overlay state for this level
+  // (do not reset hintUsed here, so user can't "cheat" by reloading)
+  hideHintOverlay();
 }
 
 // Get the index of a tile in the grid
@@ -960,18 +981,52 @@ window.addEventListener('DOMContentLoaded', () => {
   });
   // --- END: Difficulty overlay logic ---
 
-  // Allow clicking outside the modal to close the overlay and cancel new game
-  if (overlay) {
-    overlay.addEventListener('click', (e) => {
-      // If the user clicks directly on the overlay (not the modal or its children)
-      if (e.target === overlay) {
-        hideDifficultyOverlay();
-        clearDifficultyDesc();
-        clearActiveBtn();
-        activeDiffBtn = null;
+  // Hide the hint button before any game is loaded
+  const hintBtn = document.getElementById('hint-btn');
+  if (hintBtn) {
+    hintBtn.style.display = 'none';
+    // Add click event to show the hint overlay
+    hintBtn.addEventListener('click', showHintOverlay);
+  }
+
+  // --- BEGIN: Hint overlay logic ---
+  const hintOverlay = document.getElementById('hint-overlay');
+  const hintYesBtn = document.getElementById('hint-yes-btn');
+  const hintNoBtn = document.getElementById('hint-no-btn');
+  const hintCloseBtn = document.getElementById('hint-close-btn');
+  const hintWarning = document.getElementById('hint-warning');
+  const hintImgContainer = document.getElementById('hint-image-container');
+
+  // Yes: show the hint image, mark hint as used for this level
+  if (hintYesBtn) {
+    hintYesBtn.addEventListener('click', () => {
+      hintUsed[currentLevel] = true;
+      hintWarning.style.display = 'none';
+      hintImgContainer.style.display = 'flex';
+      setHintImage();
+    });
+  }
+  // No: close the overlay
+  if (hintNoBtn) {
+    hintNoBtn.addEventListener('click', () => {
+      hideHintOverlay();
+    });
+  }
+  // Close: just hide overlay
+  if (hintCloseBtn) {
+    hintCloseBtn.addEventListener('click', () => {
+      hideHintOverlay();
+    });
+  }
+  // Allow clicking outside the modal to close the overlay
+  if (hintOverlay) {
+    hintOverlay.addEventListener('click', (e) => {
+      if (e.target === hintOverlay) {
+        hideHintOverlay();
       }
     });
   }
+  // --- END: Hint overlay logic ---
 
   // Add style for inline star images in difficulty desc and .active button
   const style = document.createElement('style');
@@ -1027,4 +1082,42 @@ function hideConfirmNewGameOverlay() {
   if (overlay) {
     overlay.style.display = 'none';
   }
+}
+
+// Track if hint was used for each level
+let hintUsed = [];
+
+// Show the hint overlay (with warning if first time)
+function showHintOverlay() {
+  const overlay = document.getElementById('hint-overlay');
+  const warning = document.getElementById('hint-warning');
+  const hintImgContainer = document.getElementById('hint-image-container');
+  if (!overlay || !warning || !hintImgContainer) return;
+
+  // If hint already used for this level, skip warning and show image
+  if (hintUsed[currentLevel]) {
+    warning.style.display = 'none';
+    hintImgContainer.style.display = 'flex';
+    setHintImage();
+  } else {
+    warning.style.display = 'block';
+    hintImgContainer.style.display = 'none';
+  }
+  overlay.style.display = 'flex';
+}
+
+// Hide the hint overlay
+function hideHintOverlay() {
+  const overlay = document.getElementById('hint-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+// Set the hint image for the current level
+function setHintImage() {
+  const hintImg = document.getElementById('hint-image');
+  if (!hintImg) return;
+  // Hint images should be named "hint-1.png", "hint-2.png", ..., "hint-5.png" in the img folder
+  const imgNum = currentLevel + 1;
+  hintImg.src = `img/hint-${imgNum}.png`;
+  hintImg.alt = `Hint for Level ${imgNum}`;
 }
